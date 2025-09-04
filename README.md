@@ -21,32 +21,48 @@ WeatherApp/
 │
 ├── Common/                    # Shared resources and utilities
 │   ├── AppStrings.swift
+│   ├── Constants.swift
 │   ├── DI/AppDIContainer.swift
 │   └── Extensions/String+Extension.swift
 │
 ├── Data/                      # Data Layer
 │   ├── DataSource/WeatherDataSource.swift
+│   ├── DataSource/SearchDataSource.swift
 │   ├── DataSource/Network/
 │   │   ├── APIClient.swift
-│   │   ├── WeatherAPIEndpoints.swift
+│   │   ├── APIEndpoints.swift
 │   │   ├── WeatherAPIService.swift
+│   │   ├── SearchAPIService.swift
 │   │   └── APIConfig.swift
-│   ├── Repository/WeatherRepositoryImpl.swift
+│   ├── Repository
+│   │     └──WeatherRepositoryImpl.swift
+│   │     └──SearchRepositoryImpl.swift
 │   ├── Mapper/WeatherResponse+Mapper.swift
-│   └── Models/WeatherResponse.swift
+│   └── Models
+│        └──WeatherResponse.swift
+│        └──SearchResponse.swift
 │
 ├── Domain/                    # Domain Layer
-│   ├── Repository/WeatherRepository.swift
-│   ├── Models/WeatherReport.swift
-│   └── UseCase/GetWeatherUseCase.swift
+│   ├── Repository
+│   │     └──WeatherRepository.swift
+│   │     └──SearchRepository.swift
+│   ├── Models
+│   │     └──WeatherReport.swift
+│   │     └──SearchModel.swift
+│   ├── UseCase
+│       └──GetWeatherUseCase.swift
+│       └──SearchUseCase.swift
 │
 └── Presentation/              # Presentation Layer 
-    └── ViewModels/WeatherViewModel.swift
-    └── Models/WeatherUIModel.swift
-    └── Mapper/WeatherReport+UIMapper.swift
-    └── Views
-        └── WeatherView.swift
-        └── Components
+│    └── ViewModels
+│    │    └──WeatherViewModel.swift
+│    │    └──SearchViewModel.swift
+│    └── Models/WeatherUIModel.swift
+│    └── Mapper/WeatherReport+UIMapper.swift
+│    └── Views
+│        └── WeatherView.swift
+│        └── CitySearchView.swift
+│        └── Components
 ```
 
 ---
