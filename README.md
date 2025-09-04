@@ -14,6 +14,7 @@ Each layer has a **clear responsibility** and depends only on abstractions, not 
 
 ### Folder Structure
 
+```
 WeatherApp/
 │
 ├── WeatherAppApp.swift        # Application entry point (App Layer)
@@ -46,6 +47,7 @@ WeatherApp/
     └── Views
         └── WeatherView.swift
         └── Components
+```
 
 ---
     
@@ -60,7 +62,7 @@ This separation ensures that **UI changes won’t affect business logic**, and *
 
 ---
 
-## 🔄 Communication Between Layers
+## Communication Between Layers
 - **Presentation → Domain**: ViewModels call UseCases.  
 - **Domain → Data**: UseCases depend on Repository interfaces.  
 - **Data → Domain**: Data layer implements Repository protocols and maps Response models to Domain models.  
@@ -75,6 +77,7 @@ Each class has a **single responsibility**.
 - 'WeatherResponse+Mapper.swift' → only maps API models to Domain models.  
 - 'WeatherRepositoryImpl.swift' → only fetches and provides weather data.  
 
+```
 extension WeatherResponse {
     func toDomain() -> WeatherReport {
         return WeatherReport(
@@ -84,6 +87,8 @@ extension WeatherResponse {
         )
     }
 }
+```
+
 👉 This makes the code clean, reusable, and testable.
 
 ### 2. Open/Closed Principle
@@ -92,9 +97,11 @@ WeatherRepository is defined as a protocol.
 Current implementation: WeatherRepositoryImpl fetches current weather.
 New implementation: ForecastWeatherRepositoryImpl could fetch forecasts without modifying existing code.
 
+```
 protocol WeatherRepository {
     func getWeather(for city: String) async throws -> WeatherReport
 }
+```
 
 👉 You can extend the app by adding new repositories or use cases without changing existing ones.
 This makes the codebase future-proof.
@@ -103,6 +110,7 @@ This makes the codebase future-proof.
 WeatherRepositoryImpl conforms to WeatherRepository.
 In tests, MockWeatherRepository can replace it.
 
+```
 class MockWeatherRepository: WeatherRepository {
     var mockReport: WeatherReport?
     
@@ -110,6 +118,7 @@ class MockWeatherRepository: WeatherRepository {
         return mockReport ?? WeatherReport(city: city, temperature: 25, condition: "Sunny")
     }
 }
+```
 
 Any implementation of a protocol can be substituted without breaking the system.
 👉 This makes testing seamless and ensures flexibility.
@@ -118,9 +127,11 @@ Any implementation of a protocol can be substituted without breaking the system.
 Protocols are kept minimal and specific.
 WeatherRepository only exposes weather-related methods, keeping the contract minimal and clear:
 
+```
 protocol WeatherRepository {
     func getWeather(for city: String) async throws -> WeatherReport
 }
+```
 
 👉 This ensures the UseCase depends only on the specific methods it needs from the repository, and are not forced to depend on unused methods.
 Interfaces are **clean and lightweight**, making the code **maintainable**.
@@ -129,6 +140,7 @@ Interfaces are **clean and lightweight**, making the code **maintainable**.
 No modules depend directly on each other — they communicate via protocols.
 Constructor Injection ensures layers only depend on abstractions.
 
+```
 final class WeatherViewModel: ObservableObject {
     private let getWeatherUseCase: GetWeatherUseCase
     
@@ -136,6 +148,7 @@ final class WeatherViewModel: ObservableObject {
         self.getWeatherUseCase = getWeatherUseCase
     }
 }
+```
 
 GetWeatherUseCase depends on WeatherRepository (protocol), not WeatherRepositoryImpl.
 Dependencies are wired in AppDIContainer.swift.
@@ -150,6 +163,7 @@ The project includes both Unit Tests and UI Tests, organized in separate folders
  - Example: Verify GetWeatherUseCase correctly calls the repository.
  - Uses MockWeatherRepository to isolate tests from the network.
 
+```
 func test_GetWeatherUseCase_ReturnsReport() async throws {
     let mockRepo = MockWeatherRepository()
     mockRepo.mockReport = WeatherReport(city: "Sydney", temperature: 22, condition: "Cloudy")
@@ -159,6 +173,7 @@ func test_GetWeatherUseCase_ReturnsReport() async throws {
     
     XCTAssertEqual(result.city, "Sydney")
 }
+```
 👉 This ensures fast, reliable tests without hitting real APIs.
 
 ### UI Tests (WeatherAppUITests/)
