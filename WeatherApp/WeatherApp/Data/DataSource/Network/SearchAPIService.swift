@@ -6,15 +6,16 @@
 
 import Foundation
 
-final class WeatherAPIService: WeatherDataSource {
+final class SearchAPIService: SearchDataSource {
+    
     private let apiClient: APIClientProtocol
     
     init(apiClient: APIClientProtocol = APIClient()) {
         self.apiClient = apiClient
     }
     
-    func fetchWeather(city: String, days: Int) async throws -> WeatherResponse {
-        guard let request = APIEndpoints.weather(city: city, days: days) else {
+    func fetchCities(city: String) async throws -> [SearchResponse] {
+        guard let request = APIEndpoints.search(city: city) else {
             throw URLError(.badURL)
         }
         return try await apiClient.request(request)

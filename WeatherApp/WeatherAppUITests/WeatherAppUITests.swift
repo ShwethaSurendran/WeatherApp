@@ -20,28 +20,27 @@ final class WeatherAppUITests: XCTestCase {
     override func tearDownWithError() throws {
         app = nil
     }
-        
+    
     func testWeatherScreenLoadsSuccessfully() {
         waitForScrollView()
         assertWeatherDetailsExist()
     }
-        
+    
     func testSearchValidCity() {
         searchCity("Sydney")
+        let button = app.collectionViews.buttons["Sydney, Australia"]
+        button.tap()
         waitForScrollView()
         XCTAssertTrue(app.staticTexts["Sydney, Australia"].exists)
-        tapCancelButtonIfPresent()
     }
     
     func testSearchInvalidCity() {
         searchCity("ghk")
-        let errorText = app.staticTexts["errorMessage"]
-        let predicate = NSPredicate(format: "exists == true")
-        expectation(for: predicate, evaluatedWith: errorText)
-        waitForExpectations(timeout: 10)
-        XCTAssertTrue(errorText.exists)
+        let button = app.collectionViews.buttons["ghk"]
+        XCTAssertTrue(!button.exists)
+        tapCancelButtonIfPresent()
     }
-        
+    
     private func waitForScrollView(timeout: TimeInterval = 10) {
         let scrollView = app.scrollViews["containerScrollView"]
         let predicate = NSPredicate(format: "exists == true")
@@ -58,7 +57,9 @@ final class WeatherAppUITests: XCTestCase {
     }
     
     private func searchCity(_ city: String) {
-        let searchField = app.searchFields["Enter city name"]
+        let searchButton = app.buttons["CustomButton"]
+        searchButton.tap()
+        let searchField = app.searchFields["Search City"]
         XCTAssertTrue(searchField.exists, "Search field not found.")
         searchField.tap()
         searchField.typeText(city)
@@ -71,6 +72,5 @@ final class WeatherAppUITests: XCTestCase {
             cancelButton.tap()
         }
     }
-   
+    
 }
-

@@ -8,9 +8,8 @@
 import SwiftUI
 
 struct WeatherView: View {
-    
-    @State var cityName: String = ""
-    @StateObject var weatherViewModel: WeatherViewModel
+    @State var weatherViewModel: WeatherViewModel
+    @State private var showCitySearchView: Bool = false
     
     var body: some View {
         NavigationStack {
@@ -25,31 +24,46 @@ struct WeatherView: View {
                 switch weatherViewModel.loadingState {
                 case .loading: ProgressView()
                 case .error(_) :
-                    Text(AppStrings.UI.errorMessage)
-                        .multilineTextAlignment(.center)
-                        .padding()
-                        .accessibilityIdentifier(AppStrings.AccessibilityIds.errorMessageView)
-                case .complete(let weatherModel):
-                    ScrollView {
-                        CurrentWeatherInfoView(weather: weatherModel)
-                        DailyWeatherForecastView(daily: weatherModel?.daily ?? [])
-                        WeatherDetailsView(weatherDetails: weatherModel?.weatherDetails ?? [])
+                    VStack {
+                        HStack {
+                            Spacer()
+                            CustomButton(title: AppStrings.UI.searchButtonTitle, iconName: "magnifyingglass", isTapped: $showCitySearchView)
+                        }
+                        Spacer()
+                        Text(AppStrings.UI.errorMessage)
+                            .foregroundStyle(.white)
+                            .multilineTextAlignment(.center)
+                            .padding()
+                            .accessibilityIdentifier(AppStrings.AccessibilityIds.errorMessageView)
+                        Spacer()
                     }
-                    .padding(.top, 20)
-                    .accessibilityIdentifier(AppStrings.AccessibilityIds.scrollView)
+                case .complete(let weatherModel):
+                    VStack {
+                        
+                        HStack {
+                            Spacer()
+                            CustomButton(title: AppStrings.UI.searchButtonTitle, iconName: "magnifyingglass", isTapped: $showCitySearchView)
+                        }
+                        
+                        ScrollView {
+                            CurrentWeatherInfoView(weather: weatherModel)
+                            DailyWeatherForecastView(daily: weatherModel?.daily ?? [])
+                            WeatherDetailsView(weatherDetails: weatherModel?.weatherDetails ?? [])
+                        }
+                        .padding(.top, 20)
+                        .accessibilityIdentifier(AppStrings.AccessibilityIds.scrollView)
+                    }
                 }
             }
-            .searchable(text: $cityName, prompt: AppStrings.UI.searchCityPrompt)
-            .onSubmit(of: .search) {
-                Task {
-                    await weatherViewModel.loadWeather(city: cityName)
-                }
+            .sheet(isPresented: $showCitySearchView) {
+                CitySearchView(selectedCity: $weatherViewModel.city, isPresented: $showCitySearchView, viewModel: AppDIContainer.shared.searchViewModel)
+                    .presentationDetents([.fraction(0.99)])
             }
         }
         .task {
             await weatherViewModel.loadWeather()
         }
-        .tint(.white)
+        
     }
 }
 
@@ -68,9 +82,4 @@ struct WeatherDetailsView: View {
         .padding(.horizontal, 30)
         .padding(.top, 20)
     }
-}
-
-
-#Preview {
-    WeatherView(weatherViewModel: .init(getWeatherUseCase: GetWeatherUseCase(repository: WeatherRepositoryImpl(dataSource: WeatherAPIService()))))
 }

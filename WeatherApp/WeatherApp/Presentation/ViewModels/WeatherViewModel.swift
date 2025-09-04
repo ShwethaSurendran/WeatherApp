@@ -7,15 +7,24 @@
 
 import Foundation
 
-enum LoadingState {
+enum LoadingState<T> {
     case loading
-    case complete(WeatherUIModel?)
+    case complete(T?)
     case error(String)
 }
 
-final class WeatherViewModel: ObservableObject {
-    @Published var weather: WeatherUIModel?
-    @Published var loadingState: LoadingState = .loading
+@Observable
+final class WeatherViewModel {
+    var weather: WeatherUIModel?
+    var loadingState: LoadingState<WeatherUIModel> = .loading
+    var city: String = Constants.defaultCity
+    {
+        didSet {
+            Task {
+                await loadWeather()
+            }
+        }
+    }
 
     private let getWeatherUseCase: GetWeatherUseCaseProtocol
 
@@ -24,7 +33,7 @@ final class WeatherViewModel: ObservableObject {
     }
 
     @MainActor
-    func loadWeather(city: String="Melbourne", days: Int=4) async {
+    func loadWeather(days: Int=Constants.defaultForecastCount) async {
         loadingState = .loading
 
         do {

@@ -8,13 +8,12 @@
 import XCTest
 @testable import WeatherApp
 
-final class WeatherAPIEndpointsTests: XCTestCase {
+final class SearchAPIEndpointsTests: XCTestCase {
 
-    func testWeatherEndpointReturnsValidURLRequest() {
+    func testSearchEndpointReturnsValidURLRequest() {
         let city = "London"
-        let days = 5
         
-        let request = WeatherAPIEndpoints.weather(city: city, days: days)
+        let request = APIEndpoints.search(city: city)
         XCTAssertNotNil(request)
         
         guard let url = request?.url else {
@@ -23,9 +22,8 @@ final class WeatherAPIEndpointsTests: XCTestCase {
         }
         
         let urlString = url.absoluteString
-        XCTAssertTrue(urlString.contains("forecast.json"))
+        XCTAssertTrue(urlString.contains("search.json"))
         XCTAssertTrue(urlString.contains("key="))
         XCTAssertTrue(urlString.contains("q=London"))
-        XCTAssertTrue(urlString.contains("days=5"))
     }
 }

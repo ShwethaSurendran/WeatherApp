@@ -9,8 +9,11 @@ import Foundation
 
 struct AppStrings {
     struct UI {
-        static let searchCityPrompt = "Enter city name"
+        static let selectCityPlaceholder = "Select a City"
+        static let searchBarPlaceholder = "Search City"
         static let errorMessage = "Oops! \n Unable to get weather information. Make sure the city name is correct or check your network connection."
+        static let searchButtonTitle = "Search"
+        static let cancelButtonTitle = "Cancel"
     }
     
     struct AccessibilityIds {

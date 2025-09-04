@@ -25,7 +25,3 @@ struct WeatherDetailRow: View {
         }
     }
 }
-
-#Preview {
-    WeatherDetailRow(label: "Wind", value: "10 km/h")
-}

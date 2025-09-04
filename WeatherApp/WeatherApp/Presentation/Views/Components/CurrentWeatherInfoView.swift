@@ -36,7 +36,3 @@ struct CurrentWeatherInfoView: View {
         .foregroundColor(.white)
     }
 }
-
-#Preview {
-    CurrentWeatherInfoView(weather: nil)
-}

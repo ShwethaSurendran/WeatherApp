@@ -33,7 +33,7 @@ final class WeatherViewModelTests: XCTestCase {
         
         let viewModel = WeatherViewModel(getWeatherUseCase: mockUseCase)
         
-        await viewModel.loadWeather(city: "Sydney", days: 3)
+        await viewModel.loadWeather(days: 3)
         
         guard case .complete(let model?) = viewModel.loadingState else {
             XCTFail("Expected .complete state with model")
@@ -49,7 +49,7 @@ final class WeatherViewModelTests: XCTestCase {
         mockUseCase.result = .failure(URLError(.notConnectedToInternet))
         
         let viewModel = WeatherViewModel(getWeatherUseCase: mockUseCase)
-        await viewModel.loadWeather(city: "Sydney", days: 1)
+        await viewModel.loadWeather(days: 1)
         guard case .error(let message) = viewModel.loadingState else {
             XCTFail("Expected .error state")
             return

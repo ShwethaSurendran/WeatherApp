@@ -35,7 +35,3 @@ struct DailyWeatherForecastView: View {
         .clipShape(RoundedRectangle(cornerRadius: 15))
     }
 }
-
-#Preview {
-    DailyWeatherForecastView(daily: [])
-}

@@ -8,24 +8,40 @@
 import Foundation
 
 final class AppDIContainer {
-    
-    // MARK: - Data Layer
+    @MainActor static let shared = AppDIContainer()
+
+    // MARK: - Weather
     private lazy var weatherAPIService: WeatherDataSource = {
         WeatherAPIService()
     }()
-    
+
     private lazy var weatherRepository: WeatherRepository = {
         WeatherRepositoryImpl(dataSource: weatherAPIService)
     }()
-    
-    // MARK: - Domain Layer
+
     private lazy var getWeatherUseCase: GetWeatherUseCaseProtocol = {
         GetWeatherUseCase(repository: weatherRepository)
     }()
-    
-    // MARK: - Presentation Layer
+
     lazy var weatherViewModel: WeatherViewModel = {
         WeatherViewModel(getWeatherUseCase: getWeatherUseCase)
+    }()
+
+    // MARK: - Search
+    private lazy var searchAPIService: SearchDataSource = {
+        SearchAPIService()
+    }()
+
+    private lazy var searchRepository: SearchRepository = {
+        SearchRepositoryImpl(dataSource: searchAPIService)
+    }()
+
+    private lazy var searchUseCase: SearchUseCaseProtocol = {
+        SearchUseCase(repository: searchRepository)
+    }()
+
+    lazy var searchViewModel: SearchViewModel = {
+        SearchViewModel(getSearchUseCase: searchUseCase)
     }()
     
 }
