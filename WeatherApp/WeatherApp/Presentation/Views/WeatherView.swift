@@ -26,6 +26,7 @@ struct WeatherView: View {
                 case .loading: ProgressView()
                 case .error(_) :
                     Text(AppStrings.UI.errorMessage)
+                        .multilineTextAlignment(.center)
                         .padding()
                         .accessibilityIdentifier(AppStrings.AccessibilityIds.errorMessageView)
                 case .complete(let weatherModel):
