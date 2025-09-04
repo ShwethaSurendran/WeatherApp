@@ -4,6 +4,16 @@
 WeatherApp is built using **MVVM combined with CLEAN architecture principles**, following the **SOLID principles** to ensure the project is **scalable, testable, and maintainable**.  
 The app consumes weather data using **WeatherAPI**.
 
+
+<img width="200" height="433" alt="Simulator Screenshot - iPhone 12 - 2025-09-04 at 22 01 18" src="https://github.com/user-attachments/assets/91cadca6-2c6c-4439-bcc1-6e1efbf7a4d8" />
+
+<img width="200" height="433" alt="Simulator Screenshot - iPhone 12 - 2025-09-04 at 22 01 49" src="https://github.com/user-attachments/assets/8c7c46d8-f551-4f6b-bf79-a6782c521a00" />
+
+
+https://github.com/user-attachments/assets/495dedbc-edc8-4890-93e2-25d6c1ebc6c6
+
+
+
 ---
 
 ## Architecture Overview
