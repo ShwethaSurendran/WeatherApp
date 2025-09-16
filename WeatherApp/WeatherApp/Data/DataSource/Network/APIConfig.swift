@@ -7,5 +7,5 @@
 
 enum APIConfig {
     static let baseURL = "https://api.weatherapi.com/v1"
-    static let apiKey = "07216c76cf78450f8af43427250309" // This API key must be stored securely for production environments.
+    static let apiKey = "YOUR_API_KEY" // This API key must be stored securely for production environments.
 }
